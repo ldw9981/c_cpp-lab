@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <set>
 #include "time.h"
-
+#include <Functional>
 double getFrequency()
 {
 	LARGE_INTEGER freq;

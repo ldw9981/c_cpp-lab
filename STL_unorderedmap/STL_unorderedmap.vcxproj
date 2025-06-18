@@ -125,12 +125,16 @@
   <ItemGroup>
     <ClCompile Include="bucket.cpp" />
     <ClCompile Include="compare_vector.cpp" />
+    <ClCompile Include="custom_type.cpp" />
+    <ClCompile Include="hash_function.cpp" />
     <ClCompile Include="STL_unorderedmap.cpp" />
     <ClCompile Include="time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bucket.h" />
     <ClInclude Include="compare_vector.h" />
+    <ClInclude Include="custom_type.h" />
+    <ClInclude Include="hash_function.h" />
     <ClInclude Include="time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
