@@ -6,11 +6,14 @@
 #include "compare_vector.h"
 #include "hash_function.h"
 #include "custom_type.h"
+#include "iterate_chain.h"
 
 int main() {
-	test_hash_function();
+	//test_hash_function();
 
 
-	test_customType();
+	test_interateChain();
+	//test_customType();
+
 	return 0;
 }

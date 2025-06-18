@@ -127,6 +127,7 @@
     <ClCompile Include="compare_vector.cpp" />
     <ClCompile Include="custom_type.cpp" />
     <ClCompile Include="hash_function.cpp" />
+    <ClCompile Include="iterate_chain.cpp" />
     <ClCompile Include="STL_unorderedmap.cpp" />
     <ClCompile Include="time.cpp" />
   </ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="compare_vector.h" />
     <ClInclude Include="custom_type.h" />
     <ClInclude Include="hash_function.h" />
+    <ClInclude Include="iterate_chain.h" />
     <ClInclude Include="time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
