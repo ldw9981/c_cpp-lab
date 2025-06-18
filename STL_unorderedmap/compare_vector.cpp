@@ -5,27 +5,17 @@
 #include <string>
 #include <algorithm>
 #include <set>
+#include <iomanip>
+#include "time.h"
 #include "compare_vector.h"
 
 
-// QPC로부터 시계 주파수(초당 틱 수)를 가져옴
-double getFrequency() {
-	LARGE_INTEGER freq;
-	QueryPerformanceFrequency(&freq);
-	return static_cast<double>(freq.QuadPart);
-}
 
-// 현재 QPC 틱 수를 반환
-LARGE_INTEGER now() {
-	LARGE_INTEGER t;
-	QueryPerformanceCounter(&t);
-	return t;
-}
 
 int test_compareString()
 {
 	std::cout << __FUNCDNAME__ << "\n";
-	int size = 10000;
+	int size = 1000;
 	// 측정할 문자열 size개
 	std::vector<std::string> data;
 	for (int i = 0; i < size; ++i) {
@@ -82,6 +72,7 @@ int test_compareString()
 	double oset_search_ms = (t2.QuadPart - t1.QuadPart) * 1000.0 / freq;
 
 	// 결과 출력
+	std::cout << std::fixed << std::setprecision(5);
 	std::cout << "std::vector       insert: " << vec_insert_ms << " ms, search: " << vec_search_ms << " ms\n";
 	std::cout << "std::unordered_set insert: " << uset_insert_ms << " ms, search: " << uset_search_ms << " ms\n";
 	std::cout << "Size:" << uset.size() << " BucketCount:" << uset.bucket_count() << " LoadFactor:" << uset.load_factor() << "\n";
@@ -94,7 +85,7 @@ int test_compareString()
 int test_compareInt()
 {
 	std::cout << __FUNCDNAME__ << "\n";
-	int size = 10000;
+	int size = 1000;
 	// 측정할 문자열 
 	std::vector<int> data;
 	for (int i = 0; i < size; ++i) {
@@ -151,6 +142,7 @@ int test_compareInt()
 	double oset_search_ms = (t2.QuadPart - t1.QuadPart) * 1000.0 / freq;
 
 	// 결과 출력
+	std::cout << std::fixed << std::setprecision(5);
 	std::cout << "std::vector       insert: " << vec_insert_ms << " ms, search: " << vec_search_ms << " ms\n";
 	std::cout << "std::unordered_set insert: " << uset_insert_ms << " ms, search: " << uset_search_ms << " ms\n";
 	std::cout << "Size:" << uset.size() << " BucketCount:" << uset.bucket_count() << " LoadFactor:" << uset.load_factor() << "\n";

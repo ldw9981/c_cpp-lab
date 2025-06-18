@@ -126,10 +126,12 @@
     <ClCompile Include="bucket.cpp" />
     <ClCompile Include="compare_vector.cpp" />
     <ClCompile Include="STL_unorderedmap.cpp" />
+    <ClCompile Include="time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bucket.h" />
     <ClInclude Include="compare_vector.h" />
+    <ClInclude Include="time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,7 +5,7 @@
 #include "compare_vector.h"
 
 int main() {
-	test_compareInt();
+	test_buecket();
 
 	return 0;
 }
