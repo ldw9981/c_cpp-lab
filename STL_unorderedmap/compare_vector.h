@@ -4,4 +4,5 @@
 
 
 
-int test_compare();
+int test_compareString();
+int test_compareInt();

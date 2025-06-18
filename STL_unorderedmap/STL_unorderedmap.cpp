@@ -5,7 +5,7 @@
 #include "compare_vector.h"
 
 int main() {
-	test_compare();
+	test_compareInt();
 
 	return 0;
 }
