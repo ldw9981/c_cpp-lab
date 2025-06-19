@@ -1,6 +1,6 @@
 #include <iostream>
 
-// 버튼 콜백 타입 정의
+// 버튼 콜백 타입 정의.  이름으로 함수타입을 지정한다.
 typedef void(*ButtonCallback)();
 
 class Button {
