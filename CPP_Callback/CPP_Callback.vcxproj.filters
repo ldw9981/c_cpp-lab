@@ -33,5 +33,8 @@
     <ClCompile Include="deligate_single.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="deligate_multi.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
