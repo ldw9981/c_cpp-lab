@@ -1,91 +1,55 @@
-#include <iostream>
 #include <vector>
-#include <memory>
-#include <functional>
+#include <iostream>
+#include <cassert>
 
-template <typename... Args>
-class MulticastDelegate {
-	struct ICallback {
-		virtual ~ICallback() = default;
-		virtual void Invoke(Args... args) = 0;
-	};
-
-	// 람다/함수
-	template <typename Func>
-	struct FunctorCallback : ICallback {
-		Func func;
-		FunctorCallback(Func&& f) : func(std::forward<Func>(f)) {}
-		void Invoke(Args... args) override {
-			func(std::forward<Args>(args)...);
-		}
-	};
-
-	// 멤버 함수
-	template <typename T>
-	struct MethodCallback : ICallback {
+template<typename T, typename... Args>
+class MultiDelegate {
+	using MethodType = void(T::*)(Args...);
+	struct Slot {
 		T* instance;
-		void (T::* method)(Args...);
-		MethodCallback(T* inst, void (T::* m)(Args...)) : instance(inst), method(m) {}
-		void Invoke(Args... args) override {
-			(instance->*method)(std::forward<Args>(args)...);
-		}
+		MethodType method;
 	};
+	std::vector<Slot> slots;
 
-	std::vector<std::unique_ptr<ICallback>> callbacks;
-
-public:
-	// 멤버 함수 추가
-	template <typename T>
-	void Add(T* instance, void (T::* method)(Args...)) {
-		callbacks.emplace_back(std::make_unique<MethodCallback<T>>(instance, method));
+public:	
+	void Add(T* instance, MethodType method) {
+		for (const auto& s : slots)
+			assert(!(s.instance == instance && s.method == method) && "이미 등록된 콜백입니다!");
+		slots.push_back({ instance, method });
 	}
 
-	// 람다/전역 함수 추가
-	template <typename Func>
-	void Add(Func&& f) {
-		callbacks.emplace_back(std::make_unique<FunctorCallback<std::decay_t<Func>>>(std::forward<Func>(f)));
-	}
-
-	// 전부 호출 (Broadcast)
-	void Broadcast(Args... args) {
-		for (auto& cb : callbacks) {
-			cb->Invoke(std::forward<Args>(args)...);
+	// 인스턴스 단위로 모두 삭제 (iterator 방식)
+	void RemoveByInstance(T* instance) {
+		for (auto it = slots.begin(); it != slots.end(); /* no ++ here */) {
+			if (it->instance == instance)
+				it = slots.erase(it); // erase는 다음 요소 iterator 반환
+			else
+				++it;
 		}
 	}
-
-	// 전체 제거
-	void Clear() {
-		callbacks.clear();
+	// 모두 호출
+	void BroadCast(Args... args) const {
+		for (const auto& s : slots)
+			(s.instance->*(s.method))(args...);
 	}
 };
-class Listener {
+
+// 사용 예시
+class Handler {
 public:
-	void OnNotify(int value) {
-		std::cout << "Listener::OnNotify called with " << value << "\n";
-	}
+	void OnEvent(int v) { std::cout << "Handler(" << this << "): " << v << "\n"; }
 };
-
-void GlobalCallback(int value) {
-	std::cout << "GlobalCallback called with " << value << "\n";
-}
 
 int main() {
-	MulticastDelegate<int> OnEvent;
+	MultiDelegate<Handler, int> onEvent;
+	Handler h1, h2;
 
-	Listener a, b;
+	onEvent.Add(&h1, &Handler::OnEvent);
+	onEvent.Add(&h2, &Handler::OnEvent);
+	onEvent.BroadCast(123); // h1.OnEvent, h2.OnEvent 모두 호출
 
-	// 멤버 함수 등록
-	OnEvent.Add(&a, &Listener::OnNotify);
-	OnEvent.Add(&b, &Listener::OnNotify);
+	onEvent.RemoveByInstance(&h1); // h1 관련 모두 해제
+	onEvent.BroadCast(77); // h2.OnEvent만 호출
 
-	// 전역 함수 등록
-	OnEvent.Add(&GlobalCallback);
-
-	// 람다 등록
-	OnEvent.Add([](int v) {
-		std::cout << "Lambda received: " << v << "\n";
-		});
-
-	// 전체 호출
-	OnEvent.Broadcast(100);
+	return 0;
 }

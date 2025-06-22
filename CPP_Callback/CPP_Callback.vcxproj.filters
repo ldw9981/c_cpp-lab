@@ -30,9 +30,6 @@
     <ClCompile Include="5_bindclass_arg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="6_deligate_single.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="7_deligate_multi.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
