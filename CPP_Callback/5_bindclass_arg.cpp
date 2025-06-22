@@ -3,18 +3,17 @@
 
 class Handler {
 public:
-	void MemberOnClick() {
-		std::cout << "Button clicked! (Member function via bind)\n";
+	void MemberOnClick(int value) {
+		std::cout << "Button clicked " << value << " (Member function via bind)\n";
 	}
 };
 
 class Button {
-	std::function<void()> onClick;
+	std::function<void(int)> onClick;
 public:
-	void SetOnClick(const std::function<void()>& cb) { onClick = cb; }
-	
-	void Click() {
-		if (onClick) onClick();
+	void SetOnClick(const std::function<void(int)>& cb) { onClick = cb; }
+	void Click(int a) {
+		if (onClick) onClick(a);
 	}
 };
 
@@ -23,7 +22,8 @@ int main() {
 	Button btn;
 
 	// 멤버 함수 바인딩 (std::bind)
-	btn.SetOnClick(std::bind(&Handler::MemberOnClick, &handler));
-	btn.Click();
+	btn.SetOnClick(std::bind(&Handler::MemberOnClick, &handler, std::placeholders::_1));
+	btn.Click(42); // 42를 전달
+
 	return 0;
 }
