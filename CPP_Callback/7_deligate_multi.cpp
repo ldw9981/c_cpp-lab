@@ -1,55 +1,80 @@
 #include <vector>
+#include <functional>
 #include <iostream>
-#include <cassert>
+#include <math.h>
 
-template<typename T, typename... Args>
+template<typename... Args>
 class MultiDelegate {
-	using MethodType = void(T::*)(Args...);
 	struct Slot {
-		T* instance;
-		MethodType method;
+		void* instance; // 콜백 구분용 포인터(주로 this)
+		std::function<void(Args...)> func;
 	};
 	std::vector<Slot> slots;
 
-public:	
-	void Add(T* instance, MethodType method) {
-		for (const auto& s : slots)
-			assert(!(s.instance == instance && s.method == method) && "이미 등록된 콜백입니다!");
-		slots.push_back({ instance, method });
+public:
+	void Add(void* instance, const std::function<void(Args...)>& f) {
+		slots.push_back({ instance, f });
 	}
-
-	// 인스턴스 단위로 모두 삭제 (iterator 방식)
-	void RemoveByInstance(T* instance) {
-		for (auto it = slots.begin(); it != slots.end(); /* no ++ here */) {
-			if (it->instance == instance)
-				it = slots.erase(it); // erase는 다음 요소 iterator 반환
-			else
-				++it;
-		}
+	// tag(포인터)로 삭제
+	void Remove(void* instance) {
+		slots.erase(
+			std::remove_if(slots.begin(), slots.end(),
+				[instance](const Slot& s) { return s.instance == instance; }),
+			slots.end());
 	}
-	// 모두 호출
+	void Clear() { slots.clear(); }
 	void BroadCast(Args... args) const {
 		for (const auto& s : slots)
-			(s.instance->*(s.method))(args...);
+			if (s.func) s.func(args...);
 	}
 };
 
-// 사용 예시
-class Handler {
+class OtherComponent {
 public:
-	void OnEvent(int v) { std::cout << "Handler(" << this << "): " << v << "\n"; }
+	void OnChangeHealth(int prev, int curr)
+	{
+		std::cout << __FUNCDNAME__ << prev << " " << curr << "\n";
+	}
+};
+
+class HealthComponent {
+public:
+	int HP = 100;
+	MultiDelegate<int, int> onChangeHealth;	// Prev,Curr
+	void TakeDamage(int value)
+	{
+		int result = std::max<int>(0, HP - value);
+		SetHP(result);
+	}
+	void SetHP(int value)
+	{
+		if (HP != value) {
+			int prev = HP;
+			HP = value;
+			onChangeHealth.BroadCast(prev, HP);
+			// 체력의 변화를 받는 함수를 모두 호출
+		}
+	}
+};
+
+class Player {
+public:
+	OtherComponent other;
+	HealthComponent health;
+	void Start()
+	{
+		health.onChangeHealth.Add(&other,
+			std::bind(&OtherComponent::OnChangeHealth, &other,
+				std::placeholders::_1, std::placeholders::_2));
+	}
 };
 
 int main() {
-	MultiDelegate<Handler, int> onEvent;
-	Handler h1, h2;
-
-	onEvent.Add(&h1, &Handler::OnEvent);
-	onEvent.Add(&h2, &Handler::OnEvent);
-	onEvent.BroadCast(123); // h1.OnEvent, h2.OnEvent 모두 호출
-
-	onEvent.RemoveByInstance(&h1); // h1 관련 모두 해제
-	onEvent.BroadCast(77); // h2.OnEvent만 호출
+	Player player;
+	player.Start();
+	//외부에서 TakeDamage를 호출한다.
+	player.health.TakeDamage(20);  // HP가 80이 됨 → onChangeHealth 브로드캐스트
+	player.health.TakeDamage(20);  // HP가 60이 됨 → onChangeHealth 브로드캐스트
 
 	return 0;
 }
