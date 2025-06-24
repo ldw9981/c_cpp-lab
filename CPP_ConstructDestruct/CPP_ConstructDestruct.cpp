@@ -24,6 +24,18 @@ struct Logger {
     ~Logger() {
         std::cout << this <<  " Destruct  [" << id << "]: " << name << "\n";
     }
+
+	Logger& operator=(const Logger& other) {
+		name = other.name;
+		std::cout << this << " Copy-assign [" << id << "] from [" << other.id << "]: " << name << "\n";
+		return *this;
+	}
+
+	Logger& operator=(Logger&& other) noexcept {
+		name = std::move(other.name);
+		std::cout << this << " Move-assign [" << id << "] from [" << other.id << "]: " << name << "\n";
+		return *this;
+	}
 };
 // static 멤버 초기화
 int Logger::counter = 0;
@@ -54,6 +66,9 @@ int main() {
     // 2) 함수 파라미터, 리턴값 테스트
     std::cout << "\n--- byValueFunc 호출 ---\n";
     Logger ret = byValueFunc(stack_var);
+
+
+    stack_var = std::move(ret);
 
     std::cout << "\n--- main 끝 ---\n";
     return 0;
