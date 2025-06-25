@@ -11,9 +11,11 @@ public:
 int main() {
 	std::weak_ptr<NPC> weakNpc; // 소유권 없는 포인터 선언
 
+	
 	{
 		// NPC 인스턴스 생성과 컨트롤 블록생성
 		std::shared_ptr<NPC> npc = std::make_shared<NPC>(); 
+		std::shared_ptr<NPC> npc2 = npc; // 참조 카운트 증가
 		weakNpc = npc; // weak_ptr은 참조 카운트 증가 X
 
 		if (auto shared = weakNpc.lock()) {
