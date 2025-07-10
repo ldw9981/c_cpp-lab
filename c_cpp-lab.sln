@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPP_MoveConstruct", "CPP_Mo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPP_ValueCategory", "CPP_ValueCategory\CPP_ValueCategory.vcxproj", "{56FA35F6-386A-40A3-885A-56E16986BBF9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CPP_Polymophysm", "CPP_Polymophysm\CPP_Polymophysm.vcxproj", "{D87D5E31-8FD9-4273-8674-84B89F46E8E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{56FA35F6-386A-40A3-885A-56E16986BBF9}.Release|x64.Build.0 = Release|x64
 		{56FA35F6-386A-40A3-885A-56E16986BBF9}.Release|x86.ActiveCfg = Release|Win32
 		{56FA35F6-386A-40A3-885A-56E16986BBF9}.Release|x86.Build.0 = Release|Win32
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Debug|x64.ActiveCfg = Debug|x64
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Debug|x64.Build.0 = Debug|x64
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Debug|x86.ActiveCfg = Debug|Win32
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Debug|x86.Build.0 = Debug|Win32
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Release|x64.ActiveCfg = Release|x64
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Release|x64.Build.0 = Release|x64
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Release|x86.ActiveCfg = Release|Win32
+		{D87D5E31-8FD9-4273-8674-84B89F46E8E1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
