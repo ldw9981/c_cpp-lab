@@ -1,7 +1,11 @@
 #include <iostream>
 
-// 버튼 콜백 타입 정의.  이름으로 함수타입을 지정한다.
-typedef void(*ButtonCallback)();
+
+
+// 기존 타입에 다른 이름을 붙이는 방법
+// 여기서는 함수 포인터 타입에 별칭을 붙임
+//typedef void(*ButtonCallback)();  // C 스타일.  
+using ButtonCallback = void(*)();  // C++11 스타일
 
 class Button {
 	ButtonCallback onClick = nullptr;
