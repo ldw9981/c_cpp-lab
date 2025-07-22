@@ -6,3 +6,8 @@ void WriteVersionInfo() {
 	ofs << VERSION_STRING << std::endl;
 	ofs.close();
 }
+
+int main()
+{
+	WriteVersionInfo();
+}

@@ -1,2 +1,2 @@
 #pragma once 
-#define VERSION_STRING "Git Hash 3eac279" 
+#define VERSION_STRING "Git Hash e4b9c14" 
